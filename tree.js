@@ -44,6 +44,10 @@ class RenderTree {
     this.draw();
   }
 
+  reset() {
+    select(".flow-wrapper svg").remove();
+  }
+
   static createTree(nodes, index = 0) {
     if (!nodes[index]) return null;
     const node = new Node(nodes[index]);
@@ -176,7 +180,7 @@ class RenderTree {
   init() {
     this.tree = RenderTree.createTree(this.nodes);
     this.treeData = this.walk(this.tree);
-    this.#svg = select("body")
+    this.#svg = select(".flow-wrapper")
       .append("svg")
       .attr("width", 800)
       .attr("height", 800)
