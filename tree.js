@@ -104,10 +104,12 @@ class RenderTree {
       .append("circle")
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
-      .attr("r", 5)
+      .attr("r", 25)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2)
       .merge(circles)
       .attr("fill", (d) => {
-        return self.activePath.has(d.data.value) ? 'green' : 'black';
+        return self.activePath.has(d.data.value) ? 'green' : 'white';
       })
       .on("click", function (e, node) {
         e.stopPropagation();
@@ -126,6 +128,7 @@ class RenderTree {
     connections
       .enter()
       .append("path")
+      .attr("stroke-width", 2)
       .merge(connections)
       .attr("stroke", ({ source, target }) => {
         if (self.activePath.has(source.data.value) && self.activePath.has(target.data.value)) {
@@ -143,6 +146,7 @@ class RenderTree {
   }
 
   addText() {
+    const self = this;
     const names = this.#svg
       .append("g")
       .selectAll("text")
@@ -151,9 +155,13 @@ class RenderTree {
       .enter()
       .append("text")
       .text((d) => d.data.child)
-      .attr("x", (d) => d.x + 7)
+      .attr("x", (d) => d.x - 3)
       .attr("y", (d) => d.y + 5)
-      .text(d => d.data.name);
+      .text(d => d.data.name)
+      .on("click", function (e, node) {
+        e.stopPropagation();
+        self.onNodeClick(node);
+      });;
   }
 
   draw() {
